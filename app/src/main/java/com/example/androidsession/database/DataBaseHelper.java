@@ -7,12 +7,13 @@ import android.database.sqlite.SQLiteOpenHelper;
 import androidx.annotation.Nullable;
 
 import com.example.androidsession.database.data_service.CityDS;
+import com.example.androidsession.database.data_service.LoginDS;
 import com.example.androidsession.database.data_service.ProfileDS;
 import com.example.androidsession.database.data_service.TeamDS;
 
 public class DataBaseHelper extends SQLiteOpenHelper {
 
-    private static final int databaseVersion = 1;
+    private static final int databaseVersion = 9;
     private static final String databaseName = "MyDatabase";
 
     //to use outside of the class
@@ -59,10 +60,27 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         }catch (Exception e){
             System.err.println(e);
         }
+
+        try {
+            db.execSQL(LoginDS.create);
+        }catch (Exception e){
+            System.err.println(e);
+        }
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        if (oldVersion < 2){
+            db.execSQL("ALTER TABLE Profile ADD COLUMN loginUID INTEGER;");
+//            db.execSQL("CREATE TABLE Profile_temp (UID INTEGER PRIMARY KEY AUTOINCREMENT, Name TEXT, Age INTEGER, TeamUid INTEGER, CityUid INTEGER, Salary double, loginUID INTEGER);");
+            db.execSQL("CREATE TABLE Profile_temp (UID INTEGER PRIMARY KEY AUTOINCREMENT);");
 
+//            db.execSQL("INSERT INTO Profile_temp (Name, Age, TeamUid, CityUid) SELECT  Name, Age, TeamUid, CityUid FROM Profile;");
+//
+//            db.execSQL("DROP TABLE Profile;");
+//
+//            db.execSQL("ALTER TABLE Profile_temp RENAME TO Profile;");
+        }
+        onCreate(db);
     }
 }

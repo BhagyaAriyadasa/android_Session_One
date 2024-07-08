@@ -3,7 +3,10 @@ package com.example.androidsession.presentation.main_activity;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,14 +14,25 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.androidsession.R;
 import com.example.androidsession.database.data_service.CityDS;
+import com.example.androidsession.database.data_service.TeamDS;
 import com.example.androidsession.database.table_entity.CityEntity;
+import com.example.androidsession.database.table_entity.TeamEntity;
+
+import org.json.JSONException;
+
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    TextView test;
-    Button button;
+//    TextView test;
+    EditText editTextName, editTextAge, editTextUsername, editTextPassword, editTextSalary, editTextIsActive;
+    Spinner spinnerCity, spinnerTeam;
+    Button buttonRegister;
+//    Button button;
 
     MainActivityViewModel viewModel;
+    CityDS cityDS;
+    TeamDS teamDS;
 
     @SuppressLint("MissingInflatedId")
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,32 +40,63 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         viewModel = new ViewModelProvider(this).get(MainActivityViewModel.class);
+        cityDS = new CityDS(this);
+        teamDS = new TeamDS(this);
 
         viewInit();
-        textObserveFunction();
+//        textObserveFunction();
 
     }
 
     private void viewInit(){
         //initializing view
-        test = findViewById(R.id.textView);
+        editTextName = findViewById(R.id.editTextName);
+        editTextAge = findViewById(R.id.editTextAge);
+        editTextUsername = findViewById(R.id.editTextUsername);
+        editTextPassword = findViewById(R.id.editTextPassword);
+        editTextSalary = findViewById(R.id.editTextSalary);
+        editTextIsActive = findViewById(R.id.editTextIsActive);
 
-        button = findViewById(R.id.button);
-        button.setOnClickListener(v -> {
+        spinnerCity = findViewById(R.id.spinnerCity);
+        try {
+            List<CityEntity> cities = cityDS.getCityUIDAndName();
+            ArrayAdapter<CityEntity> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, cities);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spinnerCity.setAdapter(adapter);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        spinnerTeam = findViewById(R.id.spinnerTeam);
+        try {
+            List<TeamEntity> teams = teamDS.getTeamUIDAndName();
+            ArrayAdapter<TeamEntity> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, teams);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spinnerTeam.setAdapter(adapter);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        buttonRegister = findViewById(R.id.buttonRegister);
+        buttonRegister.setOnClickListener(v -> {
             buttonFunctions();
 //            test.setText(getResources().getString(R.string.test2));
         });
     }
 
     private void buttonFunctions(){
-        viewModel.clickMeMethod(this);
+        double salary = Double.parseDouble(editTextSalary.getText().toString());
+        int cityUid = ((CityEntity) spinnerCity.getSelectedItem()).getUID();
+        int teamUid = ((TeamEntity) spinnerTeam.getSelectedItem()).getUID();
+        viewModel.login(this, editTextUsername.getText().toString(), editTextPassword.getText().toString(), editTextIsActive.length());
+        viewModel.register(this, editTextName.getText().toString(), editTextAge.length(), cityUid, teamUid, editTextIsActive.length(), salary);
     }
 
-    private void textObserveFunction() {
-        viewModel.getText().observe(this, this::setText);
-    }
+//    private void textObserveFunction() {
+//        viewModel.getText().observe(this, this::setText);
+//    }
 
-    private void setText(String value){
-        test.setText(value);
-    }
+//    private void setText(String value){
+//        test.setText(value);
+//    }
 }

@@ -2,16 +2,19 @@ package com.example.androidsession.database.table_entity;
 
 import com.google.gson.annotations.SerializedName;
 
-public class CityEntity{
+public class LoginEntity{
 
 	@SerializedName("UID")
 	private int uID;
 
+	@SerializedName("UserName")
+	private String userName;
+
 	@SerializedName("IsActive")
 	private boolean isActive;
 
-	@SerializedName("Name")
-	private String name;
+	@SerializedName("Password")
+	private String password;
 
 	public void setUID(int uID){
 		this.uID = uID;
@@ -19,6 +22,14 @@ public class CityEntity{
 
 	public int getUID(){
 		return uID;
+	}
+
+	public void setUserName(String userName){
+		this.userName = userName;
+	}
+
+	public String getUserName(){
+		return userName;
 	}
 
 	public void setIsActive(boolean isActive){
@@ -29,15 +40,11 @@ public class CityEntity{
 		return isActive;
 	}
 
-	public void setName(String name){
-		this.name = name;
+	public void setPassword(String password){
+		this.password = password;
 	}
 
-	public String getName(){
-		return name;
-	}
-
-	public String toString() {
-		return name;
+	public String getPassword(){
+		return password;
 	}
 }
