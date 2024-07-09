@@ -13,7 +13,7 @@ import com.example.androidsession.database.data_service.TeamDS;
 
 public class DataBaseHelper extends SQLiteOpenHelper {
 
-    private static final int databaseVersion = 9;
+    private static final int databaseVersion = 6;
     private static final String databaseName = "MyDatabase";
 
     //to use outside of the class
@@ -70,16 +70,20 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        if (oldVersion < 2){
-            db.execSQL("ALTER TABLE Profile ADD COLUMN loginUID INTEGER;");
-//            db.execSQL("CREATE TABLE Profile_temp (UID INTEGER PRIMARY KEY AUTOINCREMENT, Name TEXT, Age INTEGER, TeamUid INTEGER, CityUid INTEGER, Salary double, loginUID INTEGER);");
-            db.execSQL("CREATE TABLE Profile_temp (UID INTEGER PRIMARY KEY AUTOINCREMENT);");
-
-//            db.execSQL("INSERT INTO Profile_temp (Name, Age, TeamUid, CityUid) SELECT  Name, Age, TeamUid, CityUid FROM Profile;");
-//
-//            db.execSQL("DROP TABLE Profile;");
-//
-//            db.execSQL("ALTER TABLE Profile_temp RENAME TO Profile;");
+        if (oldVersion <= newVersion){
+            db.execSQL(ProfileDS.addLoginUID);
+        }
+        if (oldVersion <= newVersion){
+            db.execSQL(ProfileDS.renameTable);
+        }
+        if (oldVersion <= newVersion){
+            db.execSQL(ProfileDS.createTable);
+        }
+        if (oldVersion <= newVersion){
+            db.execSQL(ProfileDS.insertData);
+        }
+        if (oldVersion <= newVersion){
+            db.execSQL(ProfileDS.dropTable);
         }
         onCreate(db);
     }

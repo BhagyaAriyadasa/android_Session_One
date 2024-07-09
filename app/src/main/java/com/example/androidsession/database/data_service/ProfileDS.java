@@ -25,8 +25,9 @@ public class ProfileDS {
                     + col_TeamUid + ","
                     + col_CityUid + ","
                     + col_IsActive + ","
-                    + col_Salary + ")"
-                    + " values (?,?,?,?,?,?)";
+                    + col_Salary + ","
+                    + col_LoginUid + ")"
+                    + " values (?,?,?,?,?,?,?)";
 
             dataBaseHelper.getDB().beginTransaction();
 
@@ -49,6 +50,7 @@ public class ProfileDS {
         statement.bindLong(4, object.getCityUid());
         statement.bindString(5, object.isIsActive() + "");
         statement.bindDouble(6, object.getSalary());
+        statement.bindLong(7, object.getLoginUid());
         statement.execute();
     }
 
@@ -60,6 +62,7 @@ public class ProfileDS {
     public static String col_CityUid = "CityUid";
     public static String col_IsActive = "IsActive";
     public static String col_Salary = "Salary";
+    public static String col_LoginUid = "LoginUid";
 
     public static String create = "create table if not exists " +
             tableName + "(" +
@@ -68,7 +71,18 @@ public class ProfileDS {
             col_Age + " integer ," +
             col_TeamUid + " integer ," +
             col_CityUid + " integer ," +
-            col_IsActive + " boolean default 'false' ," +
-            col_Salary + " double " +
+            col_Salary + " double ," +
+            col_LoginUid + " int " +
             ");";
+
+    public static String addLoginUID = "ALTER TABLE "+tableName+" ADD COLUMN "+col_LoginUid+" INTEGER;";
+
+    public static String renameTable = "ALTER TABLE "+tableName+" RENAME TO "+tableName+"old";
+
+    public static String createTable = "CREATE TABLE IF NOT EXISTS " +tableName+" ("+ col_UID+" INTEGER ," + col_Name+" TEXT ,"+ col_Age+" INTEGER ,"+ col_TeamUid+" INTEGER ," +col_CityUid+" INTEGER ,"+ col_Salary+" DOUBLE ," +col_LoginUid+" INTEGER " +") ";
+
+    public static String insertData = "INSERT INTO " +tableName+ " SELECT " + col_UID +" ," + col_Name + " ," + col_Age + " ," + col_TeamUid + " ," + col_CityUid + " ," + col_Salary + " ," + col_LoginUid + " FROM " + tableName+"old";
+
+    public static String dropTable = "DROP TABLE " + tableName+"old";
+
 }

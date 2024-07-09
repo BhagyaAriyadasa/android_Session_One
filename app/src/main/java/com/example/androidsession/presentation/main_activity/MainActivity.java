@@ -1,19 +1,20 @@
 package com.example.androidsession.presentation.main_activity;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.androidsession.R;
 import com.example.androidsession.database.data_service.CityDS;
+import com.example.androidsession.database.data_service.LoginDS;
 import com.example.androidsession.database.data_service.TeamDS;
 import com.example.androidsession.database.table_entity.CityEntity;
 import com.example.androidsession.database.table_entity.TeamEntity;
@@ -27,12 +28,13 @@ public class MainActivity extends AppCompatActivity {
 //    TextView test;
     EditText editTextName, editTextAge, editTextUsername, editTextPassword, editTextSalary, editTextIsActive;
     Spinner spinnerCity, spinnerTeam;
-    Button buttonRegister;
+    Button buttonRegister, buttonLogin;
 //    Button button;
 
     MainActivityViewModel viewModel;
     CityDS cityDS;
     TeamDS teamDS;
+    LoginDS loginDS;
 
     @SuppressLint("MissingInflatedId")
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
         viewModel = new ViewModelProvider(this).get(MainActivityViewModel.class);
         cityDS = new CityDS(this);
         teamDS = new TeamDS(this);
+        loginDS = new LoginDS(this);
 
         viewInit();
 //        textObserveFunction();
@@ -82,14 +85,28 @@ public class MainActivity extends AppCompatActivity {
             buttonFunctions();
 //            test.setText(getResources().getString(R.string.test2));
         });
+
+        buttonLogin = findViewById(R.id.buttonLogin);
+        buttonLogin.setOnClickListener(new View.OnClickListener() {
+            public  void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void buttonFunctions(){
+        int uid = loginDS.getLastInsertedUid();
+        int loginUid;
+        if(uid == 0){
+            loginUid = uid+1;
+        }else{
+        loginUid = uid+2;}
         double salary = Double.parseDouble(editTextSalary.getText().toString());
         int cityUid = ((CityEntity) spinnerCity.getSelectedItem()).getUID();
         int teamUid = ((TeamEntity) spinnerTeam.getSelectedItem()).getUID();
         viewModel.login(this, editTextUsername.getText().toString(), editTextPassword.getText().toString(), editTextIsActive.length());
-        viewModel.register(this, editTextName.getText().toString(), editTextAge.length(), cityUid, teamUid, editTextIsActive.length(), salary);
+        viewModel.register(this, editTextName.getText().toString(), editTextAge.length(), cityUid, teamUid, editTextIsActive.length(), salary, loginUid);
     }
 
 //    private void textObserveFunction() {

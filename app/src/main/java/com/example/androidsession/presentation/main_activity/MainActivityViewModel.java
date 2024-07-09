@@ -16,26 +16,22 @@ public class MainActivityViewModel extends ViewModel {
 
     private MutableLiveData<String> text;
 
-    public MutableLiveData<String> getText() {
-        if (text == null){
-            text = new MutableLiveData<>();
-        }
-        return text;
-    }
+//    public MutableLiveData<String> getText() {
+//        if (text == null){
+//            text = new MutableLiveData<>();
+//        }
+//        return text;
+//    }
 
-    public void register(Context context, String name, int age, int city, int team, int isActive, double salary){
-        if (text == null){
-            text = new MutableLiveData<>();
-        }
-        text.postValue("test 2");
-        saveProfile(context, name, age, city, team, isActive, salary);
+    public void register(Context context, String name, int age, int city, int team, int isActive, double salary, int loginUid){
+        saveProfile(context, name, age, city, team, isActive, salary, loginUid);
     }
 
     public void login(Context context, String userName, String password, int isActive){
         saveLogin(context,userName,password,isActive);
     }
 
-    private void saveProfile(Context context, String name, int age, int city, int team, int isActive, double salary){
+    private void saveProfile(Context context, String name, int age, int city, int team, int isActive, double salary, int loginUid){
         ProfileEntity entity = new ProfileEntity();
         if (isActive == 0){
             entity.setIsActive(false);
@@ -47,7 +43,7 @@ public class MainActivityViewModel extends ViewModel {
         entity.setTeamUid(team);
         entity.setCityUid(city);
         entity.setSalary(salary);
-//        entity.setUID(1);
+        entity.setLoginUid(loginUid);
         new ProfileDS(context).createOrUpdate(entity);
     }
 

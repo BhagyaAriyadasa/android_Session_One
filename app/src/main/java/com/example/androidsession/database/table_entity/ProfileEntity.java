@@ -25,6 +25,9 @@ public class ProfileEntity {
 	@SerializedName("Name")
 	private String name;
 
+	@SerializedName("LoginUid")
+	private int loginUid;
+
 	public void setUID(int uID){
 		this.uID = uID;
 	}
@@ -79,5 +82,13 @@ public class ProfileEntity {
 
 	public String getName(){
 		return name;
+	}
+
+	public int getLoginUid() {
+		return loginUid;
+	}
+
+	public void setLoginUid(int loginUid) {
+		this.loginUid = loginUid;
 	}
 }
