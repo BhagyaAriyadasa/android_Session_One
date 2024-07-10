@@ -102,18 +102,6 @@ public class CityDS {
         return list;
     }
 
-    public List<CityEntity> getActiveCities() throws JSONException {
-        List<CityEntity> list = new ArrayList<>();
-        String sql = "select * from " + tableName + " where " + col_IsActive + " = 'true'";
-        dataBaseHelper.getDB().beginTransaction();
-        JSONArray array = Utils.getArray(dataBaseHelper.getDB().rawQuery(sql, null));
-        for (int i = 0; i < array.length(); i++) {
-            list.add(new Gson().fromJson(array.getJSONObject(i).toString(), CityEntity.class));
-        }
-        dataBaseHelper.getDB().endTransaction();
-        return list;
-    }
-
     public static String tableName = "City";
     public static String col_UID = "UID";
     public static String col_Name = "Name";

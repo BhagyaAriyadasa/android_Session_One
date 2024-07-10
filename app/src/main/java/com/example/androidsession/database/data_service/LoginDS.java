@@ -1,6 +1,7 @@
 package com.example.androidsession.database.data_service;
 
 import android.annotation.SuppressLint;
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -55,25 +56,33 @@ public class LoginDS {
     private void insertStatement(SQLiteStatement statement, LoginEntity object) {
         statement.bindString(1, object.getUserName());
         statement.bindString(2, object.getPassword());
-//        statement.bindString(3, object.isIsActive()+"");
-        statement.bindLong(3, object.isIsActive() ? 1 : 0);
+        statement.bindString(3, object.isIsActive()+"");
         statement.execute();
     }
 
     public int getLastInsertedUid() {
         int lastInsertId = 0;
-        try {
-            String sql = "SELECT last_insert_rowid()";
-            SQLiteStatement statement = dataBaseHelper.getDB().compileStatement(sql);
-            lastInsertId = (int) statement.simpleQueryForLong();
-        } catch (Exception e) {
-            System.err.println(e);
+        SQLiteDatabase db = dataBaseHelper.getDB();
+        if (db != null) {
+            SQLiteStatement statement = null;
+            try {
+                String sql = "SELECT last_insert_rowid()";
+                statement = db.compileStatement(sql);
+                lastInsertId = (int) statement.simpleQueryForLong();
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                if (statement != null) {
+                    statement.close();
+                }
+            }
         }
         return lastInsertId;
     }
 
+
     @SuppressLint("Range")
-    public boolean getIsActiveval(String username, String password) throws JSONException {
+    public boolean getIsActive(String username, String password) throws JSONException {
         boolean isActive = false;
         String sql = "SELECT " + col_IsActive + " FROM " + tableName + " WHERE " + col_UserName + " = ? AND " + col_Password + " = ?";
 
@@ -83,7 +92,7 @@ public class LoginDS {
             cursor = dataBaseHelper.getDB().rawQuery(sql, new String[]{username, password});
 
             if (cursor != null && cursor.moveToFirst()) {
-                isActive = cursor.getInt(cursor.getColumnIndex(col_IsActive)) > 0;
+                isActive = "true".equals(cursor.getString(cursor.getColumnIndex(col_IsActive)));
             }
             dataBaseHelper.getDB().setTransactionSuccessful();
         } finally {
@@ -97,15 +106,70 @@ public class LoginDS {
     }
 
 
-    public List<LoginValidationEntity> getIsActive(String username , String password) throws JSONException {
-        List<LoginValidationEntity> list = new ArrayList<>();
-        String sql = "SELECT " + col_IsActive + " FROM " + tableName + " WHERE " + col_UserName + " = '" + username + "' AND " + col_Password + " = '" + password + "'";
-        dataBaseHelper.getDB().beginTransaction();
-        JSONArray array = Utils.getArray(dataBaseHelper.getDB().rawQuery(sql, null));
-        for (int i = 0; i < array.length(); i++) {
-            list.add(new Gson().fromJson(array.getJSONObject(i).toString(), LoginValidationEntity.class));
+//    public List<LoginValidationEntity> getIsActive(String username , String password) throws JSONException {
+//        List<LoginValidationEntity> list = new ArrayList<>();
+//        String sql = "SELECT " + col_IsActive + " FROM " + tableName + " WHERE " + col_UserName + " = '" + username + "' AND " + col_Password + " = '" + password + "'";
+//        dataBaseHelper.getDB().beginTransaction();
+//        JSONArray array = Utils.getArray(dataBaseHelper.getDB().rawQuery(sql, null));
+//        for (int i = 0; i < array.length(); i++) {
+//            list.add(new Gson().fromJson(array.getJSONObject(i).toString(), LoginValidationEntity.class));
+//        }
+//        return list;
+//    }
+
+    public List<LoginEntity> getActiveUsers() throws JSONException {
+        List<LoginEntity> list = new ArrayList<>();
+        try{
+           String sql = "select * from " + tableName + " where " + col_IsActive + " = 'true'";
+           dataBaseHelper.getDB().beginTransaction();
+           JSONArray array = Utils.getArray(dataBaseHelper.getDB().rawQuery(sql, null));
+           for (int i = 0; i < array.length(); i++) {
+               list.add(new Gson().fromJson(array.getJSONObject(i).toString(), LoginEntity.class));
+           }
+           dataBaseHelper.getDB().endTransaction();
+       }catch (Exception e){
+           System.err.println(e);
+       }
+        return list;
+    }
+
+    public List<LoginEntity> getInactiveUsers() throws JSONException {
+        List<LoginEntity> list = new ArrayList<>();
+        try{
+            String sql = "select * from " + tableName + " where " + col_IsActive + " = 'false'";
+            dataBaseHelper.getDB().beginTransaction();
+            JSONArray array = Utils.getArray(dataBaseHelper.getDB().rawQuery(sql, null));
+            for (int i = 0; i < array.length(); i++) {
+                list.add(new Gson().fromJson(array.getJSONObject(i).toString(), LoginEntity.class));
+            }
+            dataBaseHelper.getDB().endTransaction();
+        }catch (Exception e){
+            System.err.println(e);
         }
         return list;
+    }
+
+    public boolean updateUser(LoginEntity user) {
+        boolean action = false;
+        try {
+            dataBaseHelper.getDB().beginTransaction();
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(col_UserName, user.getUserName());
+            contentValues.put(col_Password, user.getPassword());
+            contentValues.put(col_IsActive, user.isIsActive() ? "false" : "true");
+
+            String whereClause = col_UserName + " = ?";
+            String[] whereArgs = {user.getUserName()};
+
+            dataBaseHelper.getDB().update(tableName, contentValues, whereClause, whereArgs);
+            dataBaseHelper.getDB().setTransactionSuccessful();
+            action = true;
+        } catch (Exception e) {
+            System.err.println(e);
+        } finally {
+            dataBaseHelper.getDB().endTransaction();
+        }
+        return action;
     }
 
     public static String tableName = "Login";

@@ -23,21 +23,16 @@ public class MainActivityViewModel extends ViewModel {
 //        return text;
 //    }
 
-    public void register(Context context, String name, int age, int city, int team, int isActive, double salary, int loginUid){
-        saveProfile(context, name, age, city, team, isActive, salary, loginUid);
+    public void register(Context context, String name, int age, int city, int team, double salary, int loginUid){
+        saveProfile(context, name, age, city, team, salary, loginUid);
     }
 
     public void login(Context context, String userName, String password, int isActive){
         saveLogin(context,userName,password,isActive);
     }
 
-    private void saveProfile(Context context, String name, int age, int city, int team, int isActive, double salary, int loginUid){
+    private void saveProfile(Context context, String name, int age, int city, int team, double salary, int loginUid){
         ProfileEntity entity = new ProfileEntity();
-        if (isActive == 0){
-            entity.setIsActive(false);
-        } else{
-            entity.setIsActive(true);
-        }
         entity.setName(name);
         entity.setAge(age);
         entity.setTeamUid(team);

@@ -24,10 +24,9 @@ public class ProfileDS {
                     + col_Age + ","
                     + col_TeamUid + ","
                     + col_CityUid + ","
-                    + col_IsActive + ","
                     + col_Salary + ","
                     + col_LoginUid + ")"
-                    + " values (?,?,?,?,?,?,?)";
+                    + " values (?,?,?,?,?,?)";
 
             dataBaseHelper.getDB().beginTransaction();
 
@@ -48,9 +47,8 @@ public class ProfileDS {
         statement.bindLong(2, object.getAge());
         statement.bindLong(3, object.getTeamUid());
         statement.bindLong(4, object.getCityUid());
-        statement.bindString(5, object.isIsActive() + "");
-        statement.bindDouble(6, object.getSalary());
-        statement.bindLong(7, object.getLoginUid());
+        statement.bindDouble(5, object.getSalary());
+        statement.bindLong(6, object.getLoginUid());
         statement.execute();
     }
 
@@ -60,7 +58,6 @@ public class ProfileDS {
     public static String  col_Age = "Age";
     public static String col_TeamUid = "TeamUid";
     public static String col_CityUid = "CityUid";
-    public static String col_IsActive = "IsActive";
     public static String col_Salary = "Salary";
     public static String col_LoginUid = "LoginUid";
 

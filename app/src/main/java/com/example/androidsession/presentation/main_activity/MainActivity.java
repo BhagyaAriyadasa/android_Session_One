@@ -106,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
         int cityUid = ((CityEntity) spinnerCity.getSelectedItem()).getUID();
         int teamUid = ((TeamEntity) spinnerTeam.getSelectedItem()).getUID();
         viewModel.login(this, editTextUsername.getText().toString(), editTextPassword.getText().toString(), editTextIsActive.length());
-        viewModel.register(this, editTextName.getText().toString(), editTextAge.length(), cityUid, teamUid, editTextIsActive.length(), salary, loginUid);
+        viewModel.register(this, editTextName.getText().toString(), editTextAge.length(), cityUid, teamUid, salary, loginUid);
     }
 
 //    private void textObserveFunction() {
