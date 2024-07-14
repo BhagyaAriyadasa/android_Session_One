@@ -27,6 +27,7 @@ public class LoginDS {
     public LoginDS(Context context){
         dataBaseHelper = DataBaseHelper.getInstance(context);
     }
+    public static int lastInsertedId = -1;
 
     public boolean createOrUpdate(LoginEntity object){
         boolean action = false;
@@ -43,6 +44,7 @@ public class LoginDS {
 
             SQLiteStatement statement = dataBaseHelper.getDB().compileStatement(sql);
             insertStatement(statement,object);
+            lastInsertedId = (int) dataBaseHelper.getDB().compileStatement("SELECT last_insert_rowid()").simpleQueryForLong();
             dataBaseHelper.getDB().setTransactionSuccessful();
             action = true;
         }catch (Exception e){

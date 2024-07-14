@@ -96,16 +96,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void buttonFunctions(){
-        int uid = loginDS.getLastInsertedUid();
-        int loginUid;
-        if(uid == 0){
-            loginUid = uid+1;
-        }else{
-        loginUid = uid+2;}
         double salary = Double.parseDouble(editTextSalary.getText().toString());
         int cityUid = ((CityEntity) spinnerCity.getSelectedItem()).getUID();
         int teamUid = ((TeamEntity) spinnerTeam.getSelectedItem()).getUID();
         viewModel.login(this, editTextUsername.getText().toString(), editTextPassword.getText().toString(), editTextIsActive.length());
+        int loginUid = loginDS.lastInsertedId;
+//        int loginUid = uid+1;
         viewModel.register(this, editTextName.getText().toString(), editTextAge.length(), cityUid, teamUid, salary, loginUid);
     }
 
