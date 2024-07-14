@@ -16,6 +16,13 @@ public class TeamEntity{
 	@SerializedName("Name")
 	private String name;
 
+	public TeamEntity(int uid, boolean isActive, int maxCount, String  name){
+		this.uID = uid;
+		this.isActive = isActive;
+		this.maxCount = maxCount;
+		this.name = name;
+	}
+
 	public void setUID(int uID){
 		this.uID = uID;
 	}

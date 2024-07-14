@@ -102,6 +102,18 @@ public class CityDS {
         return list;
     }
 
+    public void insertCities() {
+        List<CityEntity> cities = new ArrayList<>();
+        cities.add(new CityEntity(1, "City1", true));
+        cities.add(new CityEntity(2, "City2", false));
+        cities.add(new CityEntity(3, "City3", true));
+        cities.add(new CityEntity(4, "City4", false));
+        cities.add(new CityEntity(5, "City5", true));
+
+        createOrUpdate(cities);
+    }
+
+
     public static String tableName = "City";
     public static String col_UID = "UID";
     public static String col_Name = "Name";

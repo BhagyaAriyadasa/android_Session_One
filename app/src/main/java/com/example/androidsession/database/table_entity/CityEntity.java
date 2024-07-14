@@ -13,6 +13,12 @@ public class CityEntity{
 	@SerializedName("Name")
 	private String name;
 
+	public CityEntity(int UID, String Name, boolean IsActive) {
+		this.uID = UID;
+		this.name = Name;
+		this.isActive = IsActive;
+	}
+
 	public void setUID(int uID){
 		this.uID = uID;
 	}
