@@ -70,21 +70,27 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        if (oldVersion <= newVersion){
-            db.execSQL(ProfileDS.addLoginUID);
+        if (oldVersion < 6/* current version */){
+            //current version changers
+            execSQL(db,ProfileDS.addLoginUID);
         }
         if (oldVersion <= newVersion){
-            db.execSQL(ProfileDS.renameTable);
+            execSQL(db,ProfileDS.renameTable);
         }
         if (oldVersion <= newVersion){
-            db.execSQL(ProfileDS.createTable);
+            execSQL(db,ProfileDS.createTable);
         }
         if (oldVersion <= newVersion){
-            db.execSQL(ProfileDS.insertData);
+            execSQL(db,ProfileDS.insertData);
         }
         if (oldVersion <= newVersion){
-            db.execSQL(ProfileDS.dropTable);
+            execSQL(db,ProfileDS.dropTable);
         }
-        onCreate(db);
+    }
+
+    private void execSQL (SQLiteDatabase db,String qury){
+        try{
+            db.execSQL(qury);
+        }catch (Exception ignore){}
     }
 }

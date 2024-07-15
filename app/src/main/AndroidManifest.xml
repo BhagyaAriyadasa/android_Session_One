@@ -13,7 +13,7 @@
         android:theme="@style/Theme.AndroidSession"
         tools:targetApi="31" >
         <activity
-            android:name=".presentation.main_activity.SplashActivity"
+            android:name=".presentation.splash_activity.SplashActivity"
             android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,9 +21,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".presentation.main_activity.MainActivity" />
-        <activity android:name=".presentation.main_activity.LoginActivity" />
-        <activity android:name=".presentation.main_activity.HomePageActivity"/>
+        <activity android:name=".presentation.register_activity.RegisterActivity" />
+        <activity android:name=".presentation.login_activity.LoginActivity" />
+        <activity android:name=".presentation.home_page_activity.HomePageActivity"/>
     </application>
 
 </manifest>

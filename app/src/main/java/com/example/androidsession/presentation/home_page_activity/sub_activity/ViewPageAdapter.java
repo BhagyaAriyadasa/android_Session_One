@@ -1,4 +1,4 @@
-package com.example.androidsession.presentation.sub_activity;
+package com.example.androidsession.presentation.home_page_activity.sub_activity;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;

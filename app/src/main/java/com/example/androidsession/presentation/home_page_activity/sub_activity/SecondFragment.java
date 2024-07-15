@@ -1,4 +1,4 @@
-package com.example.androidsession.presentation.sub_activity;
+package com.example.androidsession.presentation.home_page_activity.sub_activity;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
