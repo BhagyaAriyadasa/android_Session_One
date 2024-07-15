@@ -15,13 +15,19 @@ import java.util.List;
 
 public class HomePageActivityViewModel extends ViewModel {
     private MutableLiveData<List<LoginEntity>> activeUserData;
+    private MutableLiveData<List<LoginEntity>> inactiveUserData;
 
     HomePageActivityViewModel(){
         activeUserData = new MutableLiveData<>();
+        inactiveUserData = new MutableLiveData<>();
     }
 
     public LiveData<List<LoginEntity>> getActiveUsers() {
         return activeUserData;
+    }
+
+    public LiveData<List<LoginEntity>> getInactiveUsers() {
+        return inactiveUserData;
     }
 
     public void fetchActiveUsers(Context context) {
@@ -34,8 +40,22 @@ public class HomePageActivityViewModel extends ViewModel {
         }
     }
 
+    public void fetchInactiveUsers(Context context) {
+        LoginDS loginDS = new LoginDS(context);
+        try {
+            List<LoginEntity> inactiveUsers = loginDS.getInactiveUsers();
+            inactiveUserData.postValue(inactiveUsers);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void deactivateUser(Context context, LoginEntity user) {
-//        user.setIsActive(false);
+        LoginDS loginDS = new LoginDS(context);
+        loginDS.updateUser(user);
+    }
+
+    public void activateUser(Context context, LoginEntity user){
         LoginDS loginDS = new LoginDS(context);
         loginDS.updateUser(user);
     }
