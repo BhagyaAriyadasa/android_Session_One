@@ -10,10 +10,10 @@ public class AlertDialogActivity {
         void onPositiveButtonClick();
     }
 
-    public static void showConfirmationDialog(Context context, String userName, AlertDialogListener listener) {
+    public static void showConfirmationDialog(Context context, String message, AlertDialogListener listener) {
         new AlertDialog.Builder(context)
                 .setTitle("Confirmation")
-                .setMessage("Do you want to set " + userName + " as inactive/active?")
+                .setMessage(message)
                 .setPositiveButton("Yes", (dialog, which) -> listener.onPositiveButtonClick())
                 .setNegativeButton("No", null)
                 .show();

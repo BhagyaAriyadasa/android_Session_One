@@ -7,6 +7,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
@@ -30,7 +31,7 @@ public class RegisterActivity extends AppCompatActivity {
     @SuppressLint("MissingInflatedId")
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_register);
 
         viewModel = new ViewModelProvider(this).get(RegisterActivityViewModel.class);
         loginDS = new LoginDS(this);
@@ -83,5 +84,18 @@ public class RegisterActivity extends AppCompatActivity {
         viewModel.postLogin(this, editTextUsername.getText().toString(), editTextPassword.getText().toString(), editTextIsActive.length());
         int loginUid = loginDS.lastInsertedId;
         viewModel.postRegister(this, editTextName.getText().toString(), editTextAge.length(), cityUid, teamUid, salary, loginUid);
+        clearFields();
+    }
+
+    private void clearFields() {
+        editTextName.setText("");
+        editTextAge.setText("");
+        editTextUsername.setText("");
+        editTextPassword.setText("");
+        editTextSalary.setText("");
+        editTextIsActive.setText("");
+        spinnerCity.setSelection(0);
+        spinnerTeam.setSelection(0);
+        Toast.makeText(RegisterActivity.this, "Registration Successful", Toast.LENGTH_SHORT).show();
     }
 }

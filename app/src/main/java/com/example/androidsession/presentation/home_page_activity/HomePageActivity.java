@@ -27,10 +27,10 @@ public class HomePageActivity extends AppCompatActivity {
         new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
             switch (position) {
                 case 0:
-                    tab.setText("First Tab");
+                    tab.setText("Active");
                     break;
                 case 1:
-                    tab.setText("Second Tab");
+                    tab.setText("Inactive");
                     break;
             }
         }).attach();

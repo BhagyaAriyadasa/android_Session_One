@@ -42,13 +42,17 @@
             android:id="@+id/spinnerCity"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Select City" />
+            android:hint="Select City"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"/>
 
         <Spinner
             android:id="@+id/spinnerTeam"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Select Team" />
+            android:hint="Select Team"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"/>
 
         <EditText
             android:id="@+id/editTextSalary"

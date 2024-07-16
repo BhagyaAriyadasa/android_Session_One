@@ -45,7 +45,8 @@ public class SecondFragment extends Fragment {
 
         listView.setOnItemLongClickListener((parent, view, position, id) -> {
             String selectedUserName = usersNames.get(position);
-            AlertDialogActivity.showConfirmationDialog(getContext(), selectedUserName, () -> {
+            String message = "Do you want to set " + selectedUserName + " as active?";
+            AlertDialogActivity.showConfirmationDialog(getContext(), message, () -> {
                 List<LoginEntity> inactiveUsers = viewModel.getInactiveUsers().getValue();
                 if (inactiveUsers != null) {
                     for (LoginEntity user : inactiveUsers) {

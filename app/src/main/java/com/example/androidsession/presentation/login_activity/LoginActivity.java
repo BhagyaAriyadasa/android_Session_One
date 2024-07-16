@@ -11,11 +11,12 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.androidsession.R;
 import com.example.androidsession.presentation.home_page_activity.HomePageActivity;
+import com.example.androidsession.presentation.register_activity.RegisterActivity;
 
 public class LoginActivity extends AppCompatActivity {
 
     EditText editTextUserName, editTextPassword;
-    Button loginButton;
+    Button loginButton, registerButton;
     LoginActivityViewModel viewModel;
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +26,7 @@ public class LoginActivity extends AppCompatActivity {
         editTextUserName = findViewById(R.id.editTextUsername);
         editTextPassword = findViewById(R.id.editTextPassword);
         loginButton = findViewById(R.id.buttonLogin);
+        registerButton = findViewById(R.id.buttonRegister);
 
         viewModel = new ViewModelProvider(this).get(LoginActivityViewModel.class);
 
@@ -33,6 +35,11 @@ public class LoginActivity extends AppCompatActivity {
             String password = editTextPassword.getText().toString();
 
             viewModel.login(LoginActivity.this,username,password);
+        });
+
+        registerButton.setOnClickListener(view -> {
+            Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+            startActivity(intent);
         });
 
         observeData();
