@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -13,7 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.androidsession.R;
-import com.example.androidsession.database.data_service.LoginDS;
+import com.example.androidsession.Utils;
 import com.example.androidsession.database.table_entity.CityEntity;
 import com.example.androidsession.database.table_entity.TeamEntity;
 import com.example.androidsession.presentation.login_activity.LoginActivity;
@@ -21,12 +22,12 @@ import com.example.androidsession.presentation.login_activity.LoginActivity;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    EditText editTextName, editTextAge, editTextUsername, editTextPassword, editTextSalary, editTextIsActive;
+    EditText editTextName, editTextAge, editTextUsername, editTextPassword, editTextSalary;
     Spinner spinnerCity, spinnerTeam;
     Button buttonRegister, buttonLogin;
+    CheckBox checkIsActive;
 
     RegisterActivityViewModel viewModel;
-    LoginDS loginDS;
 
     @SuppressLint("MissingInflatedId")
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +35,6 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
 
         viewModel = new ViewModelProvider(this).get(RegisterActivityViewModel.class);
-        loginDS = new LoginDS(this);
 
         viewInit();
         observeData();
@@ -49,9 +49,9 @@ public class RegisterActivity extends AppCompatActivity {
         editTextUsername = findViewById(R.id.editTextUsername);
         editTextPassword = findViewById(R.id.editTextPassword);
         editTextSalary = findViewById(R.id.editTextSalary);
-        editTextIsActive = findViewById(R.id.editTextIsActive);
         spinnerCity = findViewById(R.id.spinnerCity);
         spinnerTeam = findViewById(R.id.spinnerTeam);
+        checkIsActive = findViewById(R.id.checkboxIsActive);
 
         buttonRegister = findViewById(R.id.buttonRegister);
         buttonRegister.setOnClickListener(v -> buttonFunctions());
@@ -78,11 +78,17 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void buttonFunctions(){
+        boolean isActive;
+        if(checkIsActive.isChecked()){
+            isActive=true;
+        }else{
+            isActive=false;
+        }
         double salary = Double.parseDouble(editTextSalary.getText().toString());
         int cityUid = ((CityEntity) spinnerCity.getSelectedItem()).getUID();
         int teamUid = ((TeamEntity) spinnerTeam.getSelectedItem()).getUID();
-        viewModel.postLogin(this, editTextUsername.getText().toString(), editTextPassword.getText().toString(), editTextIsActive.length());
-        int loginUid = loginDS.lastInsertedId;
+        viewModel.postLogin(this, editTextUsername.getText().toString(), editTextPassword.getText().toString(), isActive);
+        int loginUid = Utils.lastInsertedLoginUId;
         viewModel.postRegister(this, editTextName.getText().toString(), editTextAge.length(), cityUid, teamUid, salary, loginUid);
         clearFields();
     }
@@ -93,9 +99,9 @@ public class RegisterActivity extends AppCompatActivity {
         editTextUsername.setText("");
         editTextPassword.setText("");
         editTextSalary.setText("");
-        editTextIsActive.setText("");
         spinnerCity.setSelection(0);
         spinnerTeam.setSelection(0);
+        checkIsActive.setChecked(false);
         Toast.makeText(RegisterActivity.this, "Registration Successful", Toast.LENGTH_SHORT).show();
     }
 }

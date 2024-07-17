@@ -61,12 +61,11 @@
             android:hint="Salary"
             android:inputType="numberDecimal" />
 
-        <EditText
-            android:id="@+id/editTextIsActive"
-            android:layout_width="match_parent"
+        <CheckBox
+            android:id="@+id/checkboxIsActive"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="Is Active"
-            android:inputType="number" />
+            android:text="Is Active"/>
 
         <Button
             android:id="@+id/buttonRegister"

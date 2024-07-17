@@ -5,7 +5,6 @@ import android.database.sqlite.SQLiteStatement;
 
 import com.example.androidsession.Utils;
 import com.example.androidsession.database.DataBaseHelper;
-import com.example.androidsession.database.table_entity.CityEntity;
 import com.example.androidsession.database.table_entity.TeamEntity;
 import com.google.gson.Gson;
 

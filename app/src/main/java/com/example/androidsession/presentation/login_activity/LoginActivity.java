@@ -23,6 +23,11 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        viewInit();
+        observeData();
+    }
+
+    private void viewInit(){
         editTextUserName = findViewById(R.id.editTextUsername);
         editTextPassword = findViewById(R.id.editTextPassword);
         loginButton = findViewById(R.id.buttonLogin);
@@ -30,19 +35,21 @@ public class LoginActivity extends AppCompatActivity {
 
         viewModel = new ViewModelProvider(this).get(LoginActivityViewModel.class);
 
-        loginButton.setOnClickListener(view -> {
-            String username = editTextUserName.getText().toString();
-            String password = editTextPassword.getText().toString();
+        loginButton.setOnClickListener(view -> loginButtonFunction());
 
-            viewModel.login(LoginActivity.this,username,password);
-        });
+        registerButton.setOnClickListener(view -> registerButtonFunction());
+    }
 
-        registerButton.setOnClickListener(view -> {
-            Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
-            startActivity(intent);
-        });
+    private void loginButtonFunction(){
+        String username = editTextUserName.getText().toString();
+        String password = editTextPassword.getText().toString();
 
-        observeData();
+        viewModel.login(LoginActivity.this,username,password);
+    }
+
+    private void registerButtonFunction(){
+        Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+        startActivity(intent);
     }
 
     private void observeData() {

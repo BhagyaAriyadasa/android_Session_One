@@ -21,17 +21,20 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash_screen);
 
         viewModel = new ViewModelProvider(this).get(SplashActivityViewModel.class);
-
         viewInit();
     }
 
     private void viewInit() {
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
-            viewModel.saveCities(this);
-            viewModel.saveTeams(this);
+            loadInitDataFromDB();
             Intent intent = new Intent(SplashActivity.this, RegisterActivity.class);
             startActivity(intent);
             finish();
         },Splash_Duration);
+    }
+
+    private void loadInitDataFromDB(){
+        viewModel.saveCities(this);
+        viewModel.saveTeams(this);
     }
 }

@@ -61,7 +61,7 @@ public class RegisterActivityViewModel extends ViewModel {
         saveProfile(context, name, age, city, team, salary, loginUid);
     }
 
-    public void postLogin(Context context, String userName, String password, int isActive){
+    public void postLogin(Context context, String userName, String password, boolean isActive){
         saveLogin(context,userName,password,isActive);
     }
 
@@ -76,16 +76,12 @@ public class RegisterActivityViewModel extends ViewModel {
         new ProfileDS(context).createOrUpdate(entity);
     }
 
-    private void saveLogin(Context context, String userName, String password, int isActive){
+    private void saveLogin(Context context, String userName, String password, boolean isActive){
         LoginEntity entity = new LoginEntity();
-        if (isActive == 0){
-            entity.setIsActive(false);
-        } else{
-            entity.setIsActive(true);
-        }
 
         entity.setUserName(userName);
         entity.setPassword(password);
+        entity.setIsActive(isActive);
 
         new LoginDS(context).createOrUpdate(entity);
     }

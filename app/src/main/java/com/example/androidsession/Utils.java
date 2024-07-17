@@ -10,6 +10,7 @@ import java.util.Arrays;
 
 public class Utils {
 
+    public static int lastInsertedLoginUId = -1;
     public static JSONArray getArray(Cursor cursor) {
 
         JSONArray resultSet = new JSONArray();

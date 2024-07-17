@@ -79,16 +79,16 @@ public class CityDS {
         statement.execute();
     }
 
-    public List<CityEntity> getAll() throws JSONException {
-        List<CityEntity> list = new ArrayList<>();
-        String sql = "select * from " + tableName;
-        dataBaseHelper.getDB().beginTransaction();
-        JSONArray array = Utils.getArray(dataBaseHelper.getDB().rawQuery(sql, null));
-        for (int i = 0; i < array.length(); i++) {
-            list.add(new Gson().fromJson(array.getJSONObject(i).toString(), CityEntity.class));
-        }
-        return list;
-    }
+//    public List<CityEntity> getAll() throws JSONException {
+//        List<CityEntity> list = new ArrayList<>();
+//        String sql = "select * from " + tableName;
+//        dataBaseHelper.getDB().beginTransaction();
+//        JSONArray array = Utils.getArray(dataBaseHelper.getDB().rawQuery(sql, null));
+//        for (int i = 0; i < array.length(); i++) {
+//            list.add(new Gson().fromJson(array.getJSONObject(i).toString(), CityEntity.class));
+//        }
+//        return list;
+//    }
 
     public List<CityEntity> getCityUIDAndName() throws JSONException {
         List<CityEntity> list = new ArrayList<>();

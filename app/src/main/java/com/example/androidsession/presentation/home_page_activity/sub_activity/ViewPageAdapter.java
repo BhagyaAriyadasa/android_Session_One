@@ -14,14 +14,10 @@ public class ViewPageAdapter extends FragmentStateAdapter {
     @NonNull
     @Override
     public Fragment createFragment(int position) {
-        switch (position) {
-            case 0:
-                return new FirstFragment();
-            case 1:
-                return new SecondFragment();
-            default:
-                return new FirstFragment();
+        if (position == 1) {
+            return new SecondFragment();
         }
+        return new FirstFragment();
     }
 
     @Override

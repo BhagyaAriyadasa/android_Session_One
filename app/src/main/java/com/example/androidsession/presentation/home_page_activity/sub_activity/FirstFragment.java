@@ -22,7 +22,7 @@ public class FirstFragment extends Fragment {
     private HomePageActivityViewModel viewModel;
     private ListView listView;
     private ArrayAdapter<String> adapter;
-    private List<String> usersNames = new ArrayList<>();
+    private final List<String> usersNames = new ArrayList<>();
 
 
     @Override

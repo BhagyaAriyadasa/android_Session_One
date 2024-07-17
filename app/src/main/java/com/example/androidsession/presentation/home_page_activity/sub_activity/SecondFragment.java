@@ -22,7 +22,7 @@ public class SecondFragment extends Fragment {
     private HomePageActivityViewModel viewModel;
     private ListView listView;
     private ArrayAdapter<String> adapter;
-    private List<String> usersNames = new ArrayList<>();
+    private final List<String> usersNames = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

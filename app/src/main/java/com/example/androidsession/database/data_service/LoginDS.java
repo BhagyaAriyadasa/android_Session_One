@@ -4,13 +4,10 @@ import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 
 import com.example.androidsession.Utils;
 import com.example.androidsession.database.DataBaseHelper;
-import com.example.androidsession.database.query_entity.LoginValidationEntity;
-import com.example.androidsession.database.table_entity.CityEntity;
 import com.example.androidsession.database.table_entity.LoginEntity;
 import com.google.gson.Gson;
 
@@ -27,7 +24,6 @@ public class LoginDS {
     public LoginDS(Context context){
         dataBaseHelper = DataBaseHelper.getInstance(context);
     }
-    public static int lastInsertedId = -1;
 
     public boolean createOrUpdate(LoginEntity object){
         boolean action = false;
@@ -44,7 +40,7 @@ public class LoginDS {
 
             SQLiteStatement statement = dataBaseHelper.getDB().compileStatement(sql);
             insertStatement(statement,object);
-            lastInsertedId = (int) dataBaseHelper.getDB().compileStatement("SELECT last_insert_rowid()").simpleQueryForLong();
+            Utils.lastInsertedLoginUId = (int) dataBaseHelper.getDB().compileStatement("SELECT last_insert_rowid()").simpleQueryForLong();
             dataBaseHelper.getDB().setTransactionSuccessful();
             action = true;
         }catch (Exception e){
@@ -61,27 +57,6 @@ public class LoginDS {
         statement.bindString(3, object.isIsActive()+"");
         statement.execute();
     }
-
-    public int getLastInsertedUid() {
-        int lastInsertId = 0;
-        SQLiteDatabase db = dataBaseHelper.getDB();
-        if (db != null) {
-            SQLiteStatement statement = null;
-            try {
-                String sql = "SELECT last_insert_rowid()";
-                statement = db.compileStatement(sql);
-                lastInsertId = (int) statement.simpleQueryForLong();
-            } catch (Exception e) {
-                e.printStackTrace();
-            } finally {
-                if (statement != null) {
-                    statement.close();
-                }
-            }
-        }
-        return lastInsertId;
-    }
-
 
     @SuppressLint("Range")
     public boolean getIsActive(String username, String password) throws JSONException {

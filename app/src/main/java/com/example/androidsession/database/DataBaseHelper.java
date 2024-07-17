@@ -88,9 +88,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    private void execSQL (SQLiteDatabase db,String qury){
+    private void execSQL (SQLiteDatabase db,String query){
         try{
-            db.execSQL(qury);
+            db.execSQL(query);
         }catch (Exception ignore){}
     }
 }
