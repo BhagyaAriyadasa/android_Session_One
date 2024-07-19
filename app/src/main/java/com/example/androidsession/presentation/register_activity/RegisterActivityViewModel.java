@@ -1,6 +1,7 @@
 package com.example.androidsession.presentation.register_activity;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -18,6 +19,8 @@ import com.example.androidsession.database.table_entity.TeamEntity;
 import org.json.JSONException;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class RegisterActivityViewModel extends ViewModel {
 
@@ -84,5 +87,13 @@ public class RegisterActivityViewModel extends ViewModel {
         entity.setIsActive(isActive);
 
         new LoginDS(context).createOrUpdate(entity);
+    }
+
+    public boolean isValidPassword(String s) {
+        Pattern PASSWORD_PATTERN
+                = Pattern.compile(
+                "[a-zA-Z0-9\\!\\@\\#\\$]{8,24}");
+
+        return !TextUtils.isEmpty(s) && PASSWORD_PATTERN.matcher(s).matches();
     }
 }

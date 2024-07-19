@@ -3,6 +3,7 @@ package com.example.androidsession.presentation.register_activity;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -18,6 +19,9 @@ import com.example.androidsession.Utils;
 import com.example.androidsession.database.table_entity.CityEntity;
 import com.example.androidsession.database.table_entity.TeamEntity;
 import com.example.androidsession.presentation.login_activity.LoginActivity;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class RegisterActivity extends AppCompatActivity {
@@ -79,18 +83,38 @@ public class RegisterActivity extends AppCompatActivity {
 
     private void buttonFunctions(){
         boolean isActive;
+        String password = "";
+
         if(checkIsActive.isChecked()){
             isActive=true;
         }else{
             isActive=false;
         }
-        double salary = Double.parseDouble(editTextSalary.getText().toString());
-        int cityUid = ((CityEntity) spinnerCity.getSelectedItem()).getUID();
-        int teamUid = ((TeamEntity) spinnerTeam.getSelectedItem()).getUID();
-        viewModel.postLogin(this, editTextUsername.getText().toString(), editTextPassword.getText().toString(), isActive);
-        int loginUid = Utils.lastInsertedLoginUId;
-        viewModel.postRegister(this, editTextName.getText().toString(), editTextAge.length(), cityUid, teamUid, salary, loginUid);
-        clearFields();
+
+//        if(viewModel.isValidPassword(password)){
+//            password = editTextPassword.getText().toString();
+//            System.out.println(password);
+//        }else{
+//            Toast.makeText(RegisterActivity.this, "Please enter a valid password", Toast.LENGTH_SHORT).show();
+//        }
+
+        if(editTextPassword.getText().toString().isEmpty() || editTextName.getText().toString().isEmpty() || editTextUsername.getText().toString().isEmpty()){
+            Toast.makeText(RegisterActivity.this, "Please fill required fields", Toast.LENGTH_SHORT).show();
+        }else if(viewModel.isValidPassword(editTextPassword.getText().toString())){
+            password = editTextPassword.getText().toString();
+            double salary = editTextSalary.getText().toString().isEmpty() ? 0.0 :Double.parseDouble(editTextSalary.getText().toString());
+            int cityUid = ((CityEntity) spinnerCity.getSelectedItem()).getUID();
+            int teamUid = ((TeamEntity) spinnerTeam.getSelectedItem()).getUID();
+            viewModel.postLogin(this, editTextUsername.getText().toString(), password, isActive);
+            int loginUid = Utils.lastInsertedLoginUId;
+            viewModel.postRegister(this, editTextName.getText().toString(), editTextAge.length(), cityUid, teamUid, salary, loginUid);
+            clearFields();
+            Toast.makeText(RegisterActivity.this, "Registration Successful", Toast.LENGTH_SHORT).show();
+        }else if(!viewModel.isValidPassword(editTextPassword.getText().toString())){
+            Toast.makeText(RegisterActivity.this, "Please enter a valid password", Toast.LENGTH_SHORT).show();
+        }else{
+            clearFields();
+        }
     }
 
     private void clearFields() {
@@ -102,6 +126,5 @@ public class RegisterActivity extends AppCompatActivity {
         spinnerCity.setSelection(0);
         spinnerTeam.setSelection(0);
         checkIsActive.setChecked(false);
-        Toast.makeText(RegisterActivity.this, "Registration Successful", Toast.LENGTH_SHORT).show();
     }
 }

@@ -2,6 +2,11 @@ package com.example.androidsession;
 
 import android.database.Cursor;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -51,5 +56,12 @@ public class Utils {
 
         cursor.close();
         return resultSet;
+    }
+
+    public static <T> JsonElement getJsonElement(T data){
+        GsonBuilder builder = new GsonBuilder();
+        builder.serializeNulls();
+        Gson gson = builder.create();
+        return JsonParser.parseString(gson.toJson(data));
     }
 }

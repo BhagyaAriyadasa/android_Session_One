@@ -3,8 +3,16 @@ package com.example.androidsession.database.data_service;
 import android.content.Context;
 import android.database.sqlite.SQLiteStatement;
 
+import com.example.androidsession.Utils;
 import com.example.androidsession.database.DataBaseHelper;
 import com.example.androidsession.database.table_entity.ProfileEntity;
+import com.google.gson.Gson;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ProfileDS {
 
@@ -40,6 +48,18 @@ public class ProfileDS {
             dataBaseHelper.getDB().endTransaction();
         }
         return action;
+    }
+
+    public List<ProfileEntity> getAll() throws JSONException {
+        List<ProfileEntity> list = new ArrayList<>();
+        String sql = "select * from " + tableName;
+        dataBaseHelper.getDB().beginTransaction();
+        JSONArray array = Utils.getArray(dataBaseHelper.getDB().rawQuery(sql, null));
+
+        for(int i = 0; i < array.length(); i++){
+            list.add(new Gson().fromJson(array.getJSONObject(i).toString(),ProfileEntity.class));
+        }
+        return  list;
     }
 
     private  void insertStatement(SQLiteStatement statement, ProfileEntity object){
